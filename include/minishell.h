@@ -6,7 +6,7 @@
 /*   By: miyuu <miyuu@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/16 20:15:15 by tkondo            #+#    #+#             */
-/*   Updated: 2025/03/05 18:33:45 by tkondo           ###   ########.fr       */
+/*   Updated: 2025/03/05 19:09:32 by tkondo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,6 +119,8 @@ void			handle_heredoc(t_redirect **redir, t_heredoc **hd_list, \
 char			*has_redirect(char *word);
 t_simple_cmd	*load_simple_cmd(t_text_list *text_list, t_heredoc **hd_list);
 t_text_list		*new_struct_text_list(char *str, size_t len);
+void			parse_redirects(t_redirect **redir, t_heredoc **hd_list, \
+								char *word, char *next_word);
 size_t			parse_general_token(char *scmd_text);
 size_t			parse_number_redir_token(char *scmd_text);
 void			parse_redirects(t_redirect **redir, t_heredoc **hd, \
@@ -139,6 +141,9 @@ void			expand_ecmds(t_text_list *text_list);
 unsigned char	*get_exit_status_p(void);
 unsigned char	get_exit_status(void);
 void			set_exit_status(unsigned char st);
+void			append_str(char ***store, char *orig);
+char			**expand_single_token(char *orig);
+size_t			namelen(char *str);
 
 /* main function */
 unsigned char	eval_pipe(const char *cmd_line, char **envp);
@@ -177,5 +182,9 @@ void			set_signal(int signal);
 /* utils */
 void			close_fds_no_stdio(int *fds, size_t size);
 void			perror_exit(char *msg);
+void			free_null_terminated_array(void **arr);
+char			*ft_strchr_mul(const char *s, char *targets, size_t target_len);
+char			*ft_strnjoin(char *s1, char *s2, size_t s2_len);
+size_t			null_terminated_array_len(void **arr);
 
 #endif
