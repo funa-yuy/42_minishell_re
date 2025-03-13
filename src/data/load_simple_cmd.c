@@ -6,7 +6,7 @@
 /*   By: miyuu <miyuu@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/16 19:28:21 by tkondo            #+#    #+#             */
-/*   Updated: 2025/03/13 14:11:50 by tkondo           ###   ########.fr       */
+/*   Updated: 2025/03/13 19:51:21 by tkondo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ t_simple_cmd	*load_simple_cmd(t_text_list *text_list, t_heredoc **hd_list)
 	scmd_list->redir = NULL;
 	scmd_list->next = NULL;
 	// Todo;リダイレクトを構造体に格納する&text_listから削除するwhile
+	// scmd_list->redir = extract_redirect_m(&text_list);
 	reg = &text_list;
 	cur = *reg;
 	while (cur)
@@ -46,8 +47,12 @@ t_simple_cmd	*load_simple_cmd(t_text_list *text_list, t_heredoc **hd_list)
 			if (!is_validate_redirect_syntax(cur))
 				return (NULL);
 			if (cur->next)
+				// TODO: 単体のリダイレクとしかないので、ポインタを渡さずに処理する
+				// redir = token2redir(cur->text, cur->next->text);
+				// lst_addlast(scmd_list->redir, redir);
 				parse_redirects(&scmd_list->redir, hd_list, cur->text,
 					cur->next->text);
+			//TODO: バリデーションでチェック済みなので削除する
 			else
 				parse_redirects(&scmd_list->redir, hd_list, cur->text, NULL);
 			// ToDo:リダイレクトを含む文字列の最後の字が記号かいなか関数分けする？
@@ -72,9 +77,7 @@ t_simple_cmd	*load_simple_cmd(t_text_list *text_list, t_heredoc **hd_list)
 			cur = *reg;
 		}
 	}
-	// ToDo:リダイレクトを除いたクォート処理・環境変数展開を、expand_ecmdsで行う。
 	expand_ecmds(&text_list);
-	// WIP: remove wc
 	scmd_list->ecmds = fill_ecmds(text_list);
 	if (!scmd_list->ecmds)
 		return (NULL);
