@@ -6,7 +6,7 @@
 /*   By: miyuu <miyuu@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/16 20:15:15 by tkondo            #+#    #+#             */
-/*   Updated: 2025/04/06 04:22:44 by miyuu            ###   ########.fr       */
+/*   Updated: 2025/04/10 01:24:40 by miyuu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,7 +123,7 @@ extern volatile unsigned char		g_signal;
 
 /* builtin function */
 bool			is_builtin(char *ecmd);
-unsigned char	execute_builtin(char **ecmds, char **envp);
+unsigned char	execute_builtin(char **ecmds);
 int				builtin_exit(char **argv);
 int				builtin_echo(char **argv);
 int				builtin_pwd(char **argv);
@@ -213,12 +213,12 @@ char			*read_variable_m(char **cur_p, char **buf_p);
 char			*expand_heredoc_line(const char *raw_line);
 
 /* main function */
-unsigned char	eval_pipe(const char *cmd_line, char **envp);
-unsigned char	eval_cmd_line(char **envp);
+unsigned char	eval_pipe(const char *cmd_line);
+unsigned char	eval_cmd_line(void);
 bool			execute_simple_cmd(const t_simple_cmd *scmd_list, \
-				int stdio_fd[2], int next_in_fd, char **envp);
+				int stdio_fd[2], int next_in_fd);
 bool			init(char **envp);
-unsigned char	execute_on_current_env(char **ecmds, t_redirect *redir, char **envp);
+unsigned char	execute_on_current_env(char **ecmds, t_redirect *redir);
 
 /* pipe function */
 bool			iterate_pipefd(bool is_first, bool is_last, int (*stdio)[2], \
