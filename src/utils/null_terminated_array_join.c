@@ -6,7 +6,7 @@
 /*   By: miyuu <miyuu@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 20:27:04 by tkondo            #+#    #+#             */
-/*   Updated: 2025/04/06 04:01:16 by miyuu            ###   ########.fr       */
+/*   Updated: 2025/04/10 16:58:50 by miyuu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,31 +22,10 @@ void	**null_terminated_array_join(void **dst, void **src)
 {
 	size_t	dstlen;
 	size_t	srclen;
-	size_t	i;
-	size_t	j;
 	void	**ptr;
 
 	dstlen = null_terminated_array_len(dst);
 	srclen = null_terminated_array_len(src);
-	ptr = ft_g_mmmalloc(sizeof(void *) * (dstlen + srclen + 1));
-	if (ptr == NULL)
-	{
-		set_error_type(ERR_SYSCALL);
-		print_errmsg_with_str(EM_SYSCALL, NULL);
-		return (NULL);
-	}
-	i = 0;
-	while (i < dstlen)
-	{
-		ptr[i] = dst[i];
-		i++;
-	}
-	j = 0;
-	while (j < srclen)
-	{
-		ptr[i + j] = src[j];
-		j++;
-	}
-	ptr[i + j] = NULL;
+	ptr = concatenate_null_terminated_array(dst, dstlen, src, srclen);
 	return (ptr);
 }

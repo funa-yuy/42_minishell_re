@@ -6,7 +6,7 @@
 #    By: miyuu <miyuu@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/09 00:35:59 by tkondo            #+#    #+#              #
-#    Updated: 2025/04/06 04:22:39 by miyuu            ###   ########.fr        #
+#    Updated: 2025/04/10 16:19:09 by miyuu            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -37,7 +37,7 @@ TARGET =\
 	builtin/builtin_export\
 	builtin/builtin_unset\
 	builtin/is_builtin\
-	command/get_path\
+	builtin/resolve_cd_next_directory\
 	command/exec_error_handling\
 	command/exec_with_path\
 	data/free_redirects\
@@ -76,6 +76,7 @@ TARGET =\
 	data/validate_cmd_line_syntax\
 	data/is_valid_quote_syntax\
 	data/get_exit_status_from_err_type\
+	data/expand_all_tokens\
 	env/is_valid_identifier\
 	env/load_variable_assignment\
 	env/register_env\
@@ -105,6 +106,9 @@ TARGET =\
 	expand/expand_single_token\
 	expand/namelen\
 	expand/expand_heredoc_line\
+	expand/expand_and_append_variable\
+	expand/expand_token_segment\
+	expand/get_variable_value\
 	main/eval_pipe\
 	main/eval_cmd_line\
 	main/execute_simple_cmd\
@@ -120,6 +124,8 @@ TARGET =\
 	read/write_until_eof\
 	read/write_until_eof_on_chproc\
 	read/dup_without_quote\
+	read/read_and_write_heredoc_lines\
+	read/get_readline_safely\
 	redirect/resolve_redirects\
 	redirect/apply_redirects\
 	redirect/backup_from_fds\
@@ -140,6 +146,7 @@ TARGET =\
 	utils/get_error_type\
 	utils/get_error_type_p\
 	utils/is_numeric\
+	utils/concatenate_null_terminated_array\
 	signal/set_handlers_for_prompt\
 	signal/set_handlers_default\
 	signal/set_handlers_for_process\

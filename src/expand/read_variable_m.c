@@ -6,7 +6,7 @@
 /*   By: miyuu <miyuu@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/14 01:51:45 by tkondo            #+#    #+#             */
-/*   Updated: 2025/04/06 04:01:16 by miyuu            ###   ########.fr       */
+/*   Updated: 2025/04/10 16:54:12 by miyuu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,6 @@
  */
 char	*read_variable_m(char **cur_p, char **buf_p)
 {
-	char	*name;
-	char	*value;
 	char	*tmp;
 
 	(*cur_p)++;
@@ -37,20 +35,5 @@ char	*read_variable_m(char **cur_p, char **buf_p)
 		}
 		return (tmp);
 	}
-	name = dup_name(*cur_p);
-	if (name == NULL || ft_strlen(name) == 0)
-	{
-		tmp = ft_strnjoin(*buf_p, "$", 1);
-		if (!tmp)
-		{
-			set_error_type(ERR_SYSCALL);
-			print_errmsg_with_str(EM_SYSCALL, NULL);
-			return (NULL);
-		}
-		*buf_p = tmp;
-		return (NULL);
-	}
-	*cur_p += ft_strlen(name);
-	value = ft_getenv(name);
-	return (value);
+	return (get_variable_value(cur_p, buf_p));
 }

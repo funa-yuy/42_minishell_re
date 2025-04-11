@@ -1,43 +1,39 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   load_variable_assignment.c                         :+:      :+:    :+:   */
+/*   expand_and_append_variable.c                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: miyuu <miyuu@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/03 17:54:33 by tkondo            #+#    #+#             */
-/*   Updated: 2025/04/10 16:22:37 by miyuu            ###   ########.fr       */
+/*   Created: 2025/04/08 16:48:27 by miyuu             #+#    #+#             */
+/*   Updated: 2025/04/10 16:33:41 by miyuu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
 /*
- * Function:
+ * Function: expand_and_append_variable
  * ----------------------------
- *  load variable assignemnt string into name and value
+ * Expands variables and concatenates the string to dst_buf.
  */
-void	load_variable_assignment(char *string, char **name, char **value)
+int	expand_and_append_variable(char **src_p, char **dst_buf)
 {
-	char	*sep;
+	char	*var;
+	char	*tmp;
 
-	*name = NULL;
-	*value = NULL;
-	sep = ft_strchr(string, '=');
-	if (sep == NULL)
-		return ;
-	*name = ft_g_mmadd(ft_strndup(string, sep - string));
-	if (*name == NULL)
+	var = read_variable_m(src_p, dst_buf);
+	if (var == NULL && errno == ENOMEM)
+		return (-1);
+	if (!var)
+		return (1);
+	tmp = ft_strnjoin(*dst_buf, var, ft_strlen(var));
+	if (!tmp)
 	{
 		set_error_type(ERR_SYSCALL);
 		print_errmsg_with_str(EM_SYSCALL, NULL);
-		return ;
+		return (-1);
 	}
-	*value = ft_g_mmadd(ft_strdup(sep + 1));
-	if (*value == NULL)
-	{
-		set_error_type(ERR_SYSCALL);
-		print_errmsg_with_str(EM_SYSCALL, NULL);
-		*name = NULL;
-	}
+	*dst_buf = tmp;
+	return (0);
 }

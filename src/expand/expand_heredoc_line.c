@@ -6,7 +6,7 @@
 /*   By: miyuu <miyuu@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/23 14:50:41 by tkondo            #+#    #+#             */
-/*   Updated: 2025/04/06 04:01:16 by miyuu            ###   ########.fr       */
+/*   Updated: 2025/04/10 16:53:10 by miyuu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 char	*expand_heredoc_line(const char *raw_line)
 {
 	char	*expanded;
-	char	*var;
+	int		result;
 
 	expanded = ft_g_mmadd(ft_strdup(""));
 	if (!expanded)
@@ -34,18 +34,11 @@ char	*expand_heredoc_line(const char *raw_line)
 		if (*raw_line == '$')
 		{
 			errno = 0;
-			var = read_variable_m((char **)&raw_line, &expanded);
-			if (var == NULL && errno == ENOMEM)
+			result = expand_and_append_variable((char **)&raw_line, &expanded);
+			if (result == -1)
 				return (NULL);
-			if (!var)
+			if (result == 1)
 				continue ;
-			expanded = ft_strnjoin(expanded, var, ft_strlen(var));
-			if (!expanded)
-			{
-				set_error_type(ERR_SYSCALL);
-				print_errmsg_with_str(EM_SYSCALL, NULL);
-				return (NULL);
-			}
 		}
 		else
 			read_bare_string_m((char **)&raw_line, &expanded, "$\0", 2);

@@ -1,11 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   builtin_cd.c                                       :+:      :+:    :+:   */ /*                                                    +:+ +:+         +:+     */
-/*   By: tkondo <tkondo@student.42tokyo.jp>         +#+  +:+       +#+        */
+/*   builtin_cd.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: miyuu <miyuu@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/01 16:47:30 by tkondo            #+#    #+#             */
-/*   Updated: 2025/03/01 16:50:15 by tkondo           ###   ########.fr       */
+/*   Created: 2025/03/01 16:50:15 by tkondo            #+#    #+#             */
+/*   Updated: 2025/04/10 17:01:22 by miyuu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,22 +26,9 @@ int	builtin_cd(char **argv)
 	char		*cur_dir;
 	char		*next_dir;
 
-	if (argv[0] && argv[1])
-	{
-		print_errmsg_with_str(EM_MANYARG, "cd");
+	next_dir = resolve_cd_next_directory(argv, old_dir);
+	if (next_dir == NULL)
 		return (1);
-	}
-	if (argv[0] && ft_strcmp(argv[0], "-") == 0 && old_dir == NULL)
-	{
-		print_errmsg_with_str(EM_CD_OPWDNSET, NULL);
-		return (1);
-	}
-	if (argv[0] == NULL || ft_strcmp(argv[0], "~") == 0)
-		next_dir = ft_getenv("HOME");
-	else if (ft_strcmp(argv[0], "-") == 0)
-		next_dir = old_dir;
-	else
-		next_dir = argv[0];
 	cur_dir = getcwd(NULL, 0);
 	if (chdir(next_dir) == -1)
 	{

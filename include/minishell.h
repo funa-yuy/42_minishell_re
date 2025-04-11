@@ -6,7 +6,7 @@
 /*   By: miyuu <miyuu@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/16 20:15:15 by tkondo            #+#    #+#             */
-/*   Updated: 2025/04/10 01:24:40 by miyuu            ###   ########.fr       */
+/*   Updated: 2025/04/10 16:59:56 by miyuu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,10 +131,10 @@ int				builtin_cd(char **argv);
 int				builtin_env(char **argv);
 int				builtin_export(char **argv);
 int				builtin_unset(char **argv);
+char			*resolve_cd_next_directory(char **argv, char *old_dir);
 
 /* command function */
 int				exec_error_handling(char *path, int status, int err_num);
-const char		*get_path(const char *ecmds);
 int				exec_with_path(const char *path, char *const argv[]);
 
 /* data function */
@@ -156,7 +156,8 @@ t_text_list		*new_struct_text_list(char *str, size_t len);
 size_t			parse_general_token(char *scmd_text);
 size_t			parse_number_redir_token(char *scmd_text);
 size_t			outerlen_between_quote(char *scmd_text, char quote);
-void			add_redir_list_last(t_redirect **redir_list, t_redirect *new_redir);
+void			add_redir_list_last(t_redirect **redir_list, \
+				t_redirect *new_redir);
 t_redirect		*token2redir(char *word, char *path);
 t_simple_cmd	*init_scmd_list(const char *cmd_line);
 t_text_list		*tokenizer_scmd_text(char *scmd_text);
@@ -175,10 +176,12 @@ size_t			getnum_scmd_texts_token(const char *cmd_line);
 char			*validate_cmd_line_syntax(const char *cmd_line);
 bool			is_valid_quote_syntax(const char *cmd_line, char target_quote);
 unsigned char	get_exit_status_from_err_type(t_error_type	err_type);
+char			**expand_all_tokens(t_text_list *tokens);
 
 /* env function */
 bool			is_valid_identifier(char *string);
-void			load_variable_assignment(char *string, char **name, char **value);
+void			load_variable_assignment(char *string, char **name, \
+				char **value);
 bool			register_env(char *string);
 char			*dup_name(char *cur);
 
@@ -203,7 +206,8 @@ void			append_str(char ***store, char *orig);
 char			**expand_single_token(char *orig);
 size_t			namelen(char *str);
 void			expand_bare_string(char **cur_p, char **buf_p);
-void			expand_bare_variable(char **cur_p, char **buf_p, char ***fixed_p);
+void			expand_bare_variable(char **cur_p, char **buf_p, \
+				char ***fixed_p);
 void			expand_double_quote(char **cur_p, char **buf_p);
 void			expand_single_quote(char **cur_p, char **buf_p);
 char			*read_bare_string(char **cur_p, char *ends, size_t ends_len);
@@ -211,9 +215,12 @@ void			read_bare_string_m(char **cur_p, char **buf_p, char *ends,
 					size_t ends_len);
 char			*read_variable_m(char **cur_p, char **buf_p);
 char			*expand_heredoc_line(const char *raw_line);
+int				expand_and_append_variable(char **src_p, char **dst_buf);
+bool			expand_token_segment(char **cur, char **buffer, char ***fixed);
+char			*get_variable_value(char **cur_p, char **buf_p);
 
 /* main function */
-unsigned char	eval_pipe(const char *cmd_line);
+unsigned char	eval_pipe(const t_simple_cmd *scmd_list);
 unsigned char	eval_cmd_line(void);
 bool			execute_simple_cmd(const t_simple_cmd *scmd_list, \
 				int stdio_fd[2], int next_in_fd);
@@ -232,6 +239,9 @@ void			write_until_eof(int fd, const char *hd_eof);
 bool			write_until_eof_on_chproc(int fd, const char *hd_eof);
 bool			write_heredoc(char *eof, char *path);
 char			*dup_without_quote(const char *hd_eof);
+void			read_and_write_heredoc_lines(int fd, const char *hd_eof, \
+				bool has_quote);
+char			*get_readline_safely(char *prompt);
 
 /* redirect function */
 int				apply_redirects(t_redirect *redir, int *keep_fds, int index);
@@ -264,5 +274,7 @@ void			set_error_type(t_error_type err_type);
 t_error_type	get_error_type(void);
 t_error_type	*get_error_type_p(void);
 bool			is_numeric(const char *str);
+void			**concatenate_null_terminated_array(void **dst, size_t	dstlen, \
+				void **src, size_t	srclen);
 
 #endif

@@ -1,36 +1,42 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   token2ecmds.c                                      :+:      :+:    :+:   */
+/*   get_variable_value.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: miyuu <miyuu@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/17 20:36:46 by tkondo            #+#    #+#             */
-/*   Updated: 2025/04/10 16:22:31 by miyuu            ###   ########.fr       */
+/*   Created: 2025/04/09 15:06:40 by miyuu             #+#    #+#             */
+/*   Updated: 2025/04/10 16:53:49 by miyuu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
 /*
- * Function: token2ecmds
+ * Function: read_variable_m
  * ----------------------------
- *  expand tokens to ecmds
+ *  Get the value of a variable from its name.
  */
-char	**token2ecmds(t_text_list *tokens)
+char	*get_variable_value(char **cur_p, char **buf_p)
 {
-	char		**expanded;
+	char	*value;
+	char	*name;
+	char	*tmp;
 
-	expanded = expand_all_tokens(tokens);
-	if (expanded == NULL)
+	name = dup_name(*cur_p);
+	if (name == NULL || ft_strlen(name) == 0)
 	{
-		expanded = ft_g_mmcalloc(sizeof(char **), 1);
-		if (expanded == NULL)
+		tmp = ft_strnjoin(*buf_p, "$", 1);
+		if (!tmp)
 		{
 			set_error_type(ERR_SYSCALL);
 			print_errmsg_with_str(EM_SYSCALL, NULL);
 			return (NULL);
 		}
+		*buf_p = tmp;
+		return (NULL);
 	}
-	return (expanded);
+	*cur_p += ft_strlen(name);
+	value = ft_getenv(name);
+	return (value);
 }

@@ -6,7 +6,7 @@
 /*   By: miyuu <miyuu@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 17:55:35 by tkondo            #+#    #+#             */
-/*   Updated: 2025/04/06 04:01:16 by miyuu            ###   ########.fr       */
+/*   Updated: 2025/04/10 16:28:58 by miyuu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,13 +26,12 @@ bool	register_env(char *string)
 	load_variable_assignment(string, &name, &value);
 	if (name == NULL)
 	{
-		if (errno)
-		{
-			print_errmsg_with_str(EM_SYSCALL, NULL);
-			ft_exit(1);
-		}
-		else
-			print_errmsg_with_str(EM_EXPO_BADID, string);
+		print_errmsg_with_str(EM_SYSCALL, NULL);
+		ft_exit(1);
+	}
+	if (!is_valid_identifier(name))
+	{
+		print_errmsg_with_str(EM_EXPO_BADID, string);
 		return (false);
 	}
 	success = ft_setenv(name, value, true) != -1;
