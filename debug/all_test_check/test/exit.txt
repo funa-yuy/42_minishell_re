@@ -1,0 +1,150 @@
+-- 以下、テストがうまく起動しない。
+../minishell
+exit
+echo $?
+
+--
+../minishell
+exit 0
+echo $?
+../minishell
+exit 1
+echo $?
+../minishell
+exit 255
+echo $?
+../minishell
+exit 256
+echo $?
+../minishell
+exit 001
+echo $?
+
+--
+../minishell
+exit -0
+echo $?
+../minishell
+exit +0
+echo $?
+../minishell
+exit -42
+echo $?
+../minishell
+exit +42
+echo $?
+-- 以下6つのテストケース、出力がbashと異なり修正が必要
+../minishell
+exit --0
+echo $?
+../minishell
+exit ++0
+echo $?
+../minishell
+exit ---42
+echo $?
+../minishell
+exit +++42
+echo $?
+../minishell
+exit -+-+42
+echo $?
+../minishell
+exit +-+-42
+echo $?
+
+--
+../minishell
+exit 2147483647
+echo $?
+../minishell
+exit -2147483648
+echo $?
+../minishell
+exit 2147483648
+echo $?
+../minishell
+exit -2147483649
+echo $?
+../minishell
+exit 9223372036854775807
+echo $?
+../minishell
+exit -9223372036854775808
+echo $?
+-- 以下2つのテストケース、出力がbashと異なり修正が必要
+../minishell
+exit 9223372036854775808
+echo $?
+../minishell
+exit -9223372036854775809
+echo $?
+
+-- 以下4つのテストケース、出力がbashと異なり修正が必要
+../minishell
+exit 0.00
+echo $?
+../minishell
+exit 4.20
+echo $?
+../minishell
+exit 0x2A
+echo $?
+../minishell
+exit 0b101010
+echo $?
+
+-- 以下3つのテストケース、出力がbashと異なり修正が必要
+../minishell
+exit w
+echo $?
+../minishell
+exit hello
+echo $?
+../minishell
+exit 42tokyo
+echo $?
+
+-- 以下4つのテストケース、出力がbashと異なり修正が必要
+../minishell
+exit 1 42
+echo $?
+../minishell
+exit 42 hello
+echo $?
+../minishell
+exit hello 42
+echo $?
+../minishell
+exit hello world
+echo $?
+
+--
+../minishell
+exit "0"
+echo $?
+../minishell
+exit '1'
+echo $?
+-- 以下4つのテストケース、出力がbashと異なり修正が必要
+../minishell
+exit ""
+echo $?
+../minishell
+exit ''
+echo $?
+../minishell
+exit "   "
+echo $?
+../minishell
+exit '   '
+echo $?
+
+--
+../minishell
+exit $aaa
+echo $?
+export STA=1
+../minishell
+exit $STA
+echo $?

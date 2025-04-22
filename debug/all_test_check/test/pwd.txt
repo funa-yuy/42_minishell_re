@@ -1,0 +1,54 @@
+"- /privateが付いてしまうため、pwd | sed -e 's|/private/tmp|/tmp|g' -e 's|/System/Volumes/Data|/|g'をつけています"
+
+mkdir /tmp/hoge
+mkdir /tmp/hoge/hogeinhoge
+
+
+pwd /tmp
+pwd
+pwd /tmp /home
+
+
+cd .
+pwd
+cd .
+cd ../
+pwd
+cd /tmp/hoge/hogeinhoge
+cd ../
+cd ../
+pwd
+pwd | sed -e 's|/private/tmp|/tmp|g' -e 's|/System/Volumes/Data|/|g'
+cd /tmp/hoge
+pwd | sed -e 's|/private/tmp|/tmp|g' -e 's|/System/Volumes/Data|/|g'
+
+cd /tmp
+cd /tmp/hoge
+pwd | sed -e 's|/private/tmp|/tmp|g' -e 's|/System/Volumes/Data|/|g'
+chmod -r /tmp/hoge
+pwd | sed -e 's|/private/tmp|/tmp|g' -e 's|/System/Volumes/Data|/|g'
+chmod +r /tmp/hoge
+chmod -w /tmp/hoge
+pwd | sed -e 's|/private/tmp|/tmp|g' -e 's|/System/Volumes/Data|/|g'
+chmod +w /tmp/hoge
+chmod -x /tmp/hoge
+-- 以下、出力がbashと異なり、修正が必要
+pwd | sed -e 's|/private/tmp|/tmp|g' -e 's|/System/Volumes/Data|/|g'
+chmod +x /tmp/hoge
+
+
+
+cd /tmp/hoge/hogeinhoge
+unset PWD
+pwd | sed -e 's|/private/tmp|/tmp|g' -e 's|/System/Volumes/Data|/|g'
+cd ../
+pwd | sed -e 's|/private/tmp|/tmp|g' -e 's|/System/Volumes/Data|/|g'
+
+
+cd /tmp/hoge/hogeinhoge
+unset OLDPWD
+pwd | sed -e 's|/private/tmp|/tmp|g' -e 's|/System/Volumes/Data|/|g'
+cd ../
+pwd | sed -e 's|/private/tmp|/tmp|g' -e 's|/System/Volumes/Data|/|g'
+
+rm -r /tmp/hoge
