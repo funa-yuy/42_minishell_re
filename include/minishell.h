@@ -6,7 +6,7 @@
 /*   By: miyuu <miyuu@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/16 20:15:15 by tkondo            #+#    #+#             */
-/*   Updated: 2025/04/10 16:59:56 by miyuu            ###   ########.fr       */
+/*   Updated: 2025/04/12 20:42:30 by miyuu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@
 /* macro */
 # define PROMPT "minishell$ "
 # define SHELL_NAME "bash: "
+# define HEREDOC_TMP_PREFIX "/tmp/heredoc_"
 
 /* struct */
 typedef struct s_execute_session	t_execute_session;
@@ -140,7 +141,7 @@ int				exec_with_path(const char *path, char *const argv[]);
 /* data function */
 t_redirect		*add_struct_redirect(int type, int from_fd, char *path);
 void			add_struct_text_list(t_text_list **head, t_text_list *new);
-char			*create_tmp_file(void);
+char			*create_heredoc_file(void);
 void			free_text_list(t_text_list *scmds);
 void			free_redirects(t_redirect *redir);
 void			free_simple_cmds(t_simple_cmd *scmd_list);
@@ -177,6 +178,9 @@ char			*validate_cmd_line_syntax(const char *cmd_line);
 bool			is_valid_quote_syntax(const char *cmd_line, char target_quote);
 unsigned char	get_exit_status_from_err_type(t_error_type	err_type);
 char			**expand_all_tokens(t_text_list *tokens);
+char			*convert_bytes2hex(unsigned char *bytes, size_t len);
+char			*create_heredoc_randfile(int fd_random);
+char			*create_heredoc_seqfile(void);
 
 /* env function */
 bool			is_valid_identifier(char *string);

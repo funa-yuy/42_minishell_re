@@ -1,34 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   handle_heredoc.c                                   :+:      :+:    :+:   */
+/*   create_heredoc_file.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: miyuu <miyuu@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/04 14:45:35 by miyuu             #+#    #+#             */
-/*   Updated: 2025/04/12 18:53:20 by miyuu            ###   ########.fr       */
+/*   Created: 2025/04/12 18:54:36 by miyuu             #+#    #+#             */
+/*   Updated: 2025/04/12 20:39:53 by miyuu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
 /*
- * Function:handle_heredoc
+ * Function:create_heredoc_file
  * ----------------------------
- * Fill data if a here document is found.
- * - Fill the here document data at the hd_list
- * - Fill the data at the redir list
+ * Creates a unique /tmp/heredoc_* file and returns its path.
  */
-t_redirect	*handle_heredoc(char *eof, int from_fd)
+char	*create_heredoc_file(void)
 {
-	char		*path;
-	t_redirect	*redir;
+	int				fd_random;
+	char			*filename;
 
-	path = create_heredoc_file();
-	if (!path)
-		return (NULL);
-	if (!write_heredoc(eof, path))
-		return (NULL);
-	redir = add_struct_redirect(REDIR_HEREDOC, from_fd, path);
-	return (redir);
+	fd_random = open("/dev/urandom", O_RDONLY);
+	if (fd_random > 0)
+	{
+		filename = create_heredoc_randfile(fd_random);
+		close(fd_random);
+	}
+	else
+		filename = create_heredoc_seqfile();
+	return (filename);
 }
