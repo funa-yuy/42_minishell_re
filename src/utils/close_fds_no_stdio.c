@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   close_fds_no_stdio.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tkondo <tkondo@student.42tokyo.jp>         +#+  +:+       +#+        */
+/*   By: miyuu <miyuu@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/16 19:19:41 by tkondo            #+#    #+#             */
-/*   Updated: 2025/02/20 14:28:11 by tkondo           ###   ########.fr       */
+/*   Created: 2025/04/24 11:03:26 by miyuu             #+#    #+#             */
+/*   Updated: 2025/04/24 11:03:27 by miyuu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
 /*
- * Function: 
+ * Function:
  * ----------------------------
  * Close file descripters safely, this means not to close fd if it is stdio
  *
