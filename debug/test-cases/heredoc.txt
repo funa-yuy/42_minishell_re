@@ -1,0 +1,47 @@
+cat <<EOF
+aiueo
+test
+EOF
+echo $?
+
+cat <<EOF | ls
+aiueo
+kakikukeko
+aaaa
+EOF
+echo $?
+
+cat <<EOF | ls | cat <<EOF
+this
+is
+first
+EOF
+i
+am
+hangry
+tenya
+ikitai
+EOF
+echo $?
+
+cat <<EOF <<EEE <<EOF
+aiueo
+test
+EEE
+aaaaa
+EEO
+EOOF
+EOF
+OEF
+EOF
+EEE
+EOF
+echo $?
+
+cat <<    EOF
+EOF
+echo $?
+
+< out | cat <<EOF
+EOF
+echo $?

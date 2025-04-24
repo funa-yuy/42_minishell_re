@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tkondo <tkondo@student.42tokyo.jp>         +#+  +:+       +#+        */
+/*   By: miyuu <miyuu@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/16 20:27:02 by tkondo            #+#    #+#             */
-/*   Updated: 2025/02/20 14:04:47 by tkondo           ###   ########.fr       */
+/*   Created: 2025/04/24 11:00:02 by miyuu             #+#    #+#             */
+/*   Updated: 2025/04/24 11:00:03 by miyuu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,11 @@
  *
  * Returns: false if any unexpected result will happen, otherwise true
  */
-bool	init(void)
+bool	init(char **envp)
 {
 	rl_outstream = stderr;
 	set_handlers_for_process();
+	ft_atexit(ft_g_mmfree);
+	ft_initenv(envp);
 	return (true);
 }

@@ -6,7 +6,7 @@
 #    By: miyuu <miyuu@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/09 00:35:59 by tkondo            #+#    #+#              #
-#    Updated: 2025/03/01 18:20:50 by tkondo           ###   ########.fr        #
+#    Updated: 2025/03/21 18:54:59 by tkondo           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,6 +27,7 @@ OBJ_DIR = $(OUT_DIR)/bin
 
 OBJ_MAIN = $(OBJ_DIR)/main/main$(OBJ_EXT)
 ROOT_DIR = ..
+ROOT_NAME = $(ROOT_DIR)/minishell
 SRC_DIR = $(ROOT_DIR)/src
 
 RL_DIR = $(shell brew --prefix readline)
@@ -57,6 +58,17 @@ LFLAGS = \
 	-L$(OUT_DIR) -ldebug \
 	-L$(ROOT_DIR)/libft -lft \
 	-L$(RL_DIR)/lib -lreadline \
+
+# ---------- Valgrind ---------- #
+
+VALGRIND = valgrind
+SUPP_FILE = ignore_readline.supp
+VFLAG = \
+	--leak-check=full\
+	--track-origins=yes\
+	--suppressions=$(SUPP_FILE)\
+	--show-error-list=yes\
+#	--show-leak-kinds=all\
 
 # ---------- Argument ---------- #
 
@@ -109,6 +121,15 @@ else
 	@$(NAME) <$(ARG)
 endif
 
+#valgrind上で実行
+valgrind:
+	@make -C $(ROOT_DIR) -s all
+ifeq ($(strip $(ARG)),)
+	@$(VALGRIND) $(VFLAG) $(ROOT_NAME)
+else
+	@$(VALGRIND) $(VFLAG) $(ROOT_NAME) <$(ARG)
+endif
+
 #bashをminishell風にして実行
 bash:
 ifeq ($(strip $(ARG)),)
@@ -123,6 +144,30 @@ ifeq ($(strip $(ARG)),)
 	lldb $(NAME)
 else
 	lldb $(NAME) -o "settings set target.input-path $(ARG)"
+endif
+
+#ビルドしてlldb上で実行、マージ先との差分のある関数にbreak pointをsetする
+lldb-diff: all
+ifeq ($(strip $(ARG)),)
+	lldb $(NAME) \
+	-o "$$(gh pr diff --name-only | grep '^src' | awk -F'[\./]' '{printf "br s -n %s\n", $$3}')"
+	-o "r"
+else
+	lldb $(NAME) -o "settings set target.input-path $(ARG)" \
+	-o "$$(gh pr diff --name-only | grep '^src' | awk -F'[\./]' '{printf "br s -n %s\n", $$3}')" \
+	-o "r"
+endif
+
+#ビルドしてlldb上で実行、分岐元ブランチとの差分のある関数にbreak pointをsetする
+lldb-diff-mb: all
+ifeq ($(strip $(ARG)),)
+	lldb $(NAME) \
+	-o "$$(git diff "$$(git show-branch | grep '*' | grep -v $$(git rev-parse --abbrev-ref HEAD) | head -1 | awk -F'[]~^[]' '{print $$2}')" --name-only | grep '^src' | awk -F'[\./]' '{printf "br s -n %s\n", $$3}')"
+	-o "r"
+else
+	lldb $(NAME) -o "settings set target.input-path $(ARG)" \
+	-o "$$(git diff "$$(git show-branch | grep '*' | grep -v $$(git rev-parse --abbrev-ref HEAD) | head -1 | awk -F'[]~^[]' '{print $$2}')" --name-only | grep '^src' | awk -F'[\./]' '{printf "br s -n %s\n", $$3}')"
+	-o "r"
 endif
 
 #ビルドしてテストを実行
@@ -149,7 +194,7 @@ $(OBJ_DIR)/%$(OBJ_EXT): $(SRC_DIR)/%$(SRC_EXT) $(INC_DEBUG)
 	@mkdir -p $(dir $@)
 	$(CC) $(CFLAGS) -c $< -o $@ $(INCLUDE_DIR)
 
-$(INC_DEBUG): $(SRCS)
+$(INC_DEBUG): $(SRCS) $(ROOT_DIR)/include/minishell.h
 	@mkdir -p $(dir $@)
 	@./scripts/exclude-prototype.pl $(ROOT_DIR)/include/minishell.h > $(INC_DEBUG).tmp
 	@./scripts/extract-prototype.pl $(ROOT_DIR)/src/*/*.c >> $(INC_DEBUG).tmp

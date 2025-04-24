@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_exit.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tkondo <tkondo@student.42tokyo.jp>         +#+  +:+       +#+        */
+/*   By: miyuu <miyuu@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/21 18:33:01 by tkondo            #+#    #+#             */
-/*   Updated: 2025/02/27 22:30:38 by tkondo           ###   ########.fr       */
+/*   Created: 2025/02/21 18:33:01 by miyuu             #+#    #+#             */
+/*   Updated: 2025/04/24 10:55:54 by miyuu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,16 +18,26 @@
  *  reproduce exit function on bash.
  *  exit by argv[0] if it is provided, otherwise return last command status
  *
- *  TODO: handle errors
  */
 int	builtin_exit(char **argv)
 {
 	int	status;
 
+	ft_putendl_fd("exit", STDERR_FILENO);
+	if (is_numeric(argv[0]) && !(argv[1] == NULL))
+	{
+		print_errmsg_with_str(EM_MANYARG, "exit");
+		return (1);
+	}
 	if (argv == NULL || argv[0] == NULL)
 		status = (int)get_exit_status();
+	else if (!is_numeric(argv[0]))
+	{
+		print_errmsg_with_str(EM_EXIT_NONUM, argv[0]);
+		status = 2;
+	}
 	else
 		status = ft_atoi(argv[0]);
-	ft_fprintf(ft_stderr(), "exit\n");
-	exit(status);
+	ft_exit(status);
+	return (1);
 }

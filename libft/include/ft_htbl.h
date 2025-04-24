@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_htbl.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tkondo <tkondo@student.42tokyo.jp>         +#+  +:+       +#+        */
+/*   By: miyuu <miyuu@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/12/11 02:17:24 by tkondo            #+#    #+#             */
-/*   Updated: 2025/01/04 12:29:06 by tkondo           ###   ########.fr       */
+/*   Created: 2025/04/24 10:49:09 by miyuu             #+#    #+#             */
+/*   Updated: 2025/04/24 10:49:10 by miyuu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,5 +32,7 @@ t_htbl					htget(t_htbl ht, const char *key);
 void					htdelone(t_htbl ht, const char *key,
 							void (*del)(t_htnode *));
 void					htclear(t_htbl ht, void (*del)(t_htnode *));
+void					htiter(t_htbl ht, void (*f)(t_htnode *, void *),
+							void *p);
 
 #endif

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_env0.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tkondo <tkondo@student.42tokyo.jp>         +#+  +:+       +#+        */
+/*   By: miyuu <miyuu@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/04 11:21:31 by tkondo            #+#    #+#             */
-/*   Updated: 2025/01/04 12:37:02 by tkondo           ###   ########.fr       */
+/*   Created: 2025/04/24 10:50:01 by miyuu             #+#    #+#             */
+/*   Updated: 2025/04/24 10:50:02 by miyuu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ void	_delenv(t_htnode *n)
 {
 	free((void *)n->key);
 	free((void *)n->val);
+	free((void *)n);
 }
 
 int	ft_initenv(char **envp)

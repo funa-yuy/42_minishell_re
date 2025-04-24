@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_env1.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tkondo <tkondo@student.42tokyo.jp>         +#+  +:+       +#+        */
+/*   By: miyuu <miyuu@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/04 11:19:40 by tkondo            #+#    #+#             */
-/*   Updated: 2025/01/04 12:22:18 by tkondo           ###   ########.fr       */
+/*   Created: 2025/04/24 10:50:10 by miyuu             #+#    #+#             */
+/*   Updated: 2025/04/24 10:50:11 by miyuu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,13 +25,23 @@ char	*ft_getenv(const char *key)
 int	ft_setenv(const char *name, const char *value, int overwrite)
 {
 	t_htbl	*p;
+	char	*dup_value;
+	char	*past_value;
 
-	if (!overwrite && ft_getenv(name) != NULL)
+	past_value = ft_getenv(name);
+	if (!overwrite && past_value != NULL)
 		return (-1);
 	p = _getenvp();
 	if (p == NULL)
 		return (-1);
-	htadd(*p, name, (void *)value);
+	dup_value = ft_strdup(value);
+	if (name == NULL || dup_value == NULL)
+	{
+		free(dup_value);
+		return (-1);
+	}
+	htadd(*p, name, (void *)dup_value);
+	free(past_value);
 	return (0);
 }
 
@@ -40,6 +50,7 @@ int	ft_putenv(char *string)
 	char	*sp;
 	char	*key;
 	char	*val;
+	int		ret;
 
 	sp = ft_strchr(string, '=');
 	if (sp == NULL)
@@ -50,18 +61,13 @@ int	ft_putenv(char *string)
 	ft_memcpy(key, string, sp - string);
 	key[sp - string] = '\0';
 	val = ft_strdup(sp + 1);
-	if (val == NULL)
-	{
-		free(key);
-		return (-1);
-	}
-	if (ft_setenv(key, val, 1) == -1)
-	{
-		free(key);
-		free(val);
-		return (-1);
-	}
-	return (0);
+	if (val == NULL || ft_setenv(key, val, 1) == -1)
+		ret = -1;
+	else
+		ret = 0;
+	free(key);
+	free(val);
+	return (ret);
 }
 
 int	ft_unsetenv(const char *name)

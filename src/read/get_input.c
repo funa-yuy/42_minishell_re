@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_input.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tkondo <tkondo@student.42tokyo.jp>         +#+  +:+       +#+        */
+/*   By: miyuu <miyuu@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/16 20:49:32 by tkondo            #+#    #+#             */
-/*   Updated: 2025/02/27 23:13:10 by tkondo           ###   ########.fr       */
+/*   Created: 2025/02/16 20:49:32 by miyuu             #+#    #+#             */
+/*   Updated: 2025/04/24 11:00:20 by miyuu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,14 +22,25 @@ char	*get_input(void)
 	char	*input;
 
 	if (g_signal == SIGINT)
-		ft_fprintf(ft_stderr(), "\n");
+		ft_putstr_fd("\n", STDERR_FILENO);
 	set_signal(0);
 	set_handlers_for_prompt();
-	input = readline(PROMPT);
+	errno = 0;
+	input = get_readline_safely(PROMPT);
+	if (input == NULL && errno == ENOMEM)
+		return (NULL);
 	set_handlers_for_process();
 	if (input)
 		add_history(input);
 	else
-		input = ft_strdup("exit");
+	{
+		input = ft_g_mmadd(ft_strdup("exit"));
+		if (!input)
+		{
+			set_error_type(ERR_SYSCALL);
+			print_errmsg_with_str(EM_SYSCALL, NULL);
+			return (NULL);
+		}
+	}
 	return (input);
 }

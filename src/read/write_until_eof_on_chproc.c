@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   write_until_eof_on_chproc.c                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tkondo <tkondo@student.42tokyo.jp>         +#+  +:+       +#+        */
+/*   By: miyuu <miyuu@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/26 16:18:21 by tkondo            #+#    #+#             */
-/*   Updated: 2025/02/27 14:49:34 by tkondo           ###   ########.fr       */
+/*   Created: 2025/02/26 16:18:21 by miyuu             #+#    #+#             */
+/*   Updated: 2025/04/24 11:00:27 by miyuu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,12 @@ bool	write_until_eof_on_chproc(int fd, const char *hd_eof)
 	if (pid == 0)
 	{
 		set_handlers_for_heredoc();
+		errno = 0;
 		write_until_eof(fd, hd_eof);
-		exit(0);
+		close(fd);
+		if (errno == ENOMEM)
+			ft_exit(1);
+		ft_exit(0);
 	}
 	waitpid(pid, &stat, 0);
 	set_handlers_for_process();

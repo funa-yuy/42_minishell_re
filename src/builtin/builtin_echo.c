@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_echo.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tkondo <tkondo@student.42tokyo.jp>         +#+  +:+       +#+        */
+/*   By: miyuu <miyuu@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/21 18:33:01 by tkondo            #+#    #+#             */
-/*   Updated: 2025/03/01 20:16:12 by tkondo           ###   ########.fr       */
+/*   Created: 2025/02/21 18:33:01 by miyuu             #+#    #+#             */
+/*   Updated: 2025/04/24 10:55:49 by miyuu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,12 +26,12 @@ int	builtin_echo(char **argv)
 		argv++;
 	while (*argv)
 	{
-		ft_printf("%s", *argv);
+		ft_putstr_fd(*argv, STDOUT_FILENO);
 		if (*(argv + 1))
-			ft_printf(" ");
+			ft_putstr_fd(" ", STDOUT_FILENO);
 		argv++;
 	}
 	if (!opt_n)
-		ft_printf("\n");
+		ft_putendl_fd("", STDOUT_FILENO);
 	return (0);
 }

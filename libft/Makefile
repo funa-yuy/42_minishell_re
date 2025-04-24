@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: tkondo <tkondo@student.42tokyo.jp>         +#+  +:+       +#+         #
+#    By: miyuu <miyuu@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2024/05/09 00:35:59 by tkondo            #+#    #+#              #
-#    Updated: 2025/01/04 15:21:37 by tkondo           ###   ########.fr        #
+#    Created: 2025/04/24 10:48:34 by miyuu             #+#    #+#              #
+#    Updated: 2025/04/24 10:48:35 by miyuu            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -84,6 +84,7 @@ TARGET =\
 	ft_fprintf\
 	ft_htbl0\
 	ft_htbl1\
+	ft_htbl2\
 	ft_blocked_node\
 	ft_memory\
 	ft_gmemory\
@@ -91,6 +92,7 @@ TARGET =\
 	ft_exit\
 	ft_env0\
 	ft_env1\
+	ft_env2\
 	ft_exec\
 	get_next_line\
 

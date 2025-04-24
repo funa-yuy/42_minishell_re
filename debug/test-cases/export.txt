@@ -1,0 +1,40 @@
+export ft=42
+echo $?
+export 42=FT
+echo $?
+export a==
+echo $?
+export B=b=
+echo $?
+export aaa=iii uuu=eee
+echo $?
+
+export = ooo=kkk
+echo $?
+
+env | sort | grep -v ^_=
+
+export aiueo=aiueo | env | sort | grep -v ^_=
+echo $?
+export =ft
+echo $?
+export == ===
+echo $?
+export ^=a
+echo $?
+export %=ft
+echo $?
+export === a=1
+echo $?
+
+export 42
+echo $?
+
+export 42+
+echo $?
+
+export hello+
+echo $?
+
+export hello=world
+echo $?

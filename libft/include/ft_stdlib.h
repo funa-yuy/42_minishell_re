@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_stdlib.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tkondo <tkondo@student.42.fr>              +#+  +:+       +#+        */
+/*   By: miyuu <miyuu@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/04/27 19:52:48 by tkondo            #+#    #+#             */
-/*   Updated: 2025/01/04 11:47:12 by tkondo           ###   ########.fr       */
+/*   Created: 2025/04/24 10:49:25 by miyuu             #+#    #+#             */
+/*   Updated: 2025/04/24 10:49:26 by miyuu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,5 +29,6 @@ int		ft_putenv(char *string);
 int		ft_unsetenv(const char *name);
 int		ft_initenv(char **envp);
 void	ft_clearenv(void);
+char	**ft_getenvp(void);
 
 #endif

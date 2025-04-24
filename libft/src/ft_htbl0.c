@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_htbl0.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tkondo <tkondo@student.42tokyo.jp>         +#+  +:+       +#+        */
+/*   By: miyuu <miyuu@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/12/11 01:20:53 by tkondo            #+#    #+#             */
-/*   Updated: 2024/12/31 02:09:54 by tkondo           ###   ########.fr       */
+/*   Created: 2025/04/24 10:51:05 by miyuu             #+#    #+#             */
+/*   Updated: 2025/04/24 10:51:06 by miyuu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ static t_htnode	*htnodenew(const char *key, void *val)
 	p = (t_htnode *)ft_calloc(sizeof(t_htnode), 1);
 	if (!p)
 		return (NULL);
-	p->key = key;
+	p->key = ft_strdup(key);
 	p->val = val;
 	return (p);
 }

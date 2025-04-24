@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_htbl1.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tkondo <tkondo@student.42tokyo.jp>         +#+  +:+       +#+        */
+/*   By: miyuu <miyuu@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/12/11 01:25:15 by tkondo            #+#    #+#             */
-/*   Updated: 2025/01/04 14:16:10 by tkondo           ###   ########.fr       */
+/*   Created: 2025/04/24 10:51:08 by miyuu             #+#    #+#             */
+/*   Updated: 2025/04/24 10:51:09 by miyuu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,11 @@ static void	htnodedel(t_htnode *htnode, void (*del)(t_htnode *))
 {
 	if (del)
 		del(htnode);
-	free(htnode);
+	else
+	{
+		free((void *)htnode->key);
+		free((void *)htnode);
+	}
 }
 
 void	htdelone(t_htnode **ht, const char *key, void (*del)(t_htnode *))

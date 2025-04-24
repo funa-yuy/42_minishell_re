@@ -1,11 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   builtin_cd.c                                       :+:      :+:    :+:   */ /*                                                    +:+ +:+         +:+     */
-/*   By: tkondo <tkondo@student.42tokyo.jp>         +#+  +:+       +#+        */
+/*   builtin_cd.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: miyuu <miyuu@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/01 16:47:30 by tkondo            #+#    #+#             */
-/*   Updated: 2025/03/01 16:50:15 by tkondo           ###   ########.fr       */
+/*   Created: 2025/03/01 16:50:15 by miyuu             #+#    #+#             */
+/*   Updated: 2025/04/24 10:55:46 by miyuu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,31 +26,18 @@ int	builtin_cd(char **argv)
 	char		*cur_dir;
 	char		*next_dir;
 
-	if (argv[0] && argv[1])
-	{
-		ft_fprintf(ft_stderr(), "bash: cd: too many arguments\n");
+	next_dir = resolve_cd_next_directory(argv, old_dir);
+	if (next_dir == NULL)
 		return (1);
-	}
-	if (argv[0] && ft_strcmp(argv[0], "-") == 0 && old_dir == NULL)
-	{
-		ft_fprintf(ft_stderr(), "bash: cd: OLDPWD not set\n");
-		return (1);
-	}
-	if (argv[0] == NULL || ft_strcmp(argv[0], "~") == 0)
-		next_dir = getenv("HOME");
-	else if (ft_strcmp(argv[0], "-") == 0)
-		next_dir = old_dir;
-	else
-		next_dir = argv[0];
 	cur_dir = getcwd(NULL, 0);
 	if (chdir(next_dir) == -1)
 	{
-		ft_fprintf(ft_stderr(), "bash: cd: %s: ", next_dir);
-		perror(NULL);
+		print_errmsg_with_str(EM_CD_SYSCALL, next_dir);
+		free(cur_dir);
 		return (1);
 	}
 	if (argv[0] && ft_strcmp(argv[0], "-") == 0)
-		ft_printf("%s\n", next_dir);
+		ft_putendl_fd(next_dir, STDOUT_FILENO);
 	free(old_dir);
 	old_dir = cur_dir;
 	return (0);
